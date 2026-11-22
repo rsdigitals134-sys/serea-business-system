@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7b3fe4">
+<title>SEREA | Business Studio</title>
+<style>
+html,body{margin:0;width:100%;min-height:100%;background:#fcfaff}
+#loader{min-height:100vh;display:grid;place-items:center;text-align:center;font:15px system-ui;color:#7138d3;padding:24px;box-sizing:border-box}
+#loader strong{display:block;font:700 30px Georgia;letter-spacing:4px;margin-bottom:8px}
+#app{display:none;border:0;width:100%;height:100vh;min-height:100vh}
+</style>
+</head>
+<body>
+<div id="loader"><div><strong>SEREA</strong>Opening your Business Studio…<br><small>Please wait a moment.</small></div></div>
+<iframe id="app" title="SEREA Business Studio"></iframe>
+<script>
+(async()=>{
+ const source='https://raw.githubusercontent.com/rsdigitals134-sys/serea-business-system/052098a16c0efaa3d32f9fffee61d6831ac9fdee/index%204.html';
+ try{
+  const r=await fetch(source,{cache:'no-store'}); if(!r.ok) throw new Error('Website file could not be loaded ('+r.status+').');
+  let html=await r.text();
+  const base='<base href="https://rsdigitals134-sys.github.io/serea-business-system/">';
+  html=html.replace('<head>','<head>'+base);
+  const css=`<style>
+  :root{--purple:#7b3fe4;--purple2:#a46bf0;--lilac:#eee3ff;--lav:#faf6ff;--ink:#302342;--muted:#857995;--line:#eee5f5}
+  body{background:radial-gradient(ellipse at 88% 0%,#f1e8ff 0,transparent 34%),#fcfaff;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .side{width:252px;background:rgba(255,255,255,.96);border-right:1px solid #eee4f8;padding:27px 16px;box-shadow:8px 0 30px #4e26700a}.brand b{font:700 30px Georgia;color:#7138d3;letter-spacing:4px}.brand small{color:#a28bbd}.nav button{padding:12px 13px;border-radius:13px;color:#71647f}.nav button.active{background:linear-gradient(110deg,#eee3ff,#f7f0ff);color:#7138d3;box-shadow:inset 3px 0 #9a62ed}
+  .main{margin-left:252px;width:calc(100% - 252px);padding:30px clamp(18px,3vw,42px) 70px;max-width:1700px}.top h1{font-size:29px;color:#342345}.eyebrow{color:#8c50df}.sub{color:#93869e}.btn{border:1px solid #eadff5;background:#fff;color:#7844c7;border-radius:12px;padding:10px 15px}.btn.primary{background:linear-gradient(135deg,#8a4de0,#7138d3);border-color:transparent;color:#fff}.card{border:1px solid #eee6f5;border-radius:19px;padding:19px;background:#fff;box-shadow:0 5px 22px #40245c08}.metric{position:relative;overflow:hidden;min-height:120px}.metric:after{content:"";position:absolute;width:76px;height:76px;border-radius:50%;right:-28px;top:-28px;background:#f3eaff}.metric strong{color:#39294b}.sectionhead h2,.card h3{color:#3e2c50}.tablewrap{padding:5px 13px 12px}table{white-space:normal}th{font-size:10px;text-transform:uppercase;color:#a193af;background:#fcfaff;padding:13px 10px}td{font-size:12px;color:#594c65;padding:13px 10px}.pill{background:#f1e8ff;color:#7842c9}.insight{background:linear-gradient(120deg,#faf5ff,#fffafc);border:1px solid #f1e8f8;border-radius:14px;padding:15px}.field input,.field select,.field textarea{border:1px solid #e9dff1;border-radius:11px;padding:12px}.modalbox{border:1px solid #eee3f6;border-radius:22px;box-shadow:0 24px 80px #28113e2b;padding:24px}
+  .daily-welcome{position:relative;overflow:hidden;display:grid;grid-template-columns:1.15fr .85fr;gap:20px;padding:25px 27px;margin:0 0 20px;border-radius:23px;background:linear-gradient(115deg,#7138d3,#9255e7 52%,#b27bed);color:#fff;box-shadow:0 12px 30px #7940c52b}.daily-welcome:after{content:"✿";position:absolute;right:22%;top:-52px;font:190px Georgia;color:#ffffff12;pointer-events:none}.daily-kicker{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#f0e4ff;font-weight:750}.daily-date{font-size:12px;color:#f0e4ff;margin-top:7px}.daily-welcome h2{font:700 29px Georgia;margin:9px 0 8px}.daily-welcome p{margin:0;color:#f6edff;line-height:1.6;font-size:13px}.daily-right{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:10px}.daily-note{padding:13px 15px;border:1px solid #ffffff38;background:#ffffff18;border-radius:14px}.daily-note small{display:block;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#efddff;font-weight:750;margin-bottom:5px}.daily-note strong{font:600 14px Georgia;color:#fff;line-height:1.45}
+  @media(max-width:900px){.side{width:72px;padding:15px 8px}.brand{padding:5px 6px 20px}.brand b{font-size:18px}.brand small,.navlabel,.nav button span.txt{display:none}.nav button{justify-content:center;padding:12px 5px}.main{margin-left:72px;width:calc(100% - 72px);padding:22px 16px 45px}.daily-welcome{grid-template-columns:1fr}.daily-right{display:grid;grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.main{padding:15px 12px 38px}.top{align-items:flex-start;flex-direction:column}.top h1{font-size:24px}.grid{gap:9px}.metric strong{font-size:20px}.card{padding:14px;border-radius:16px}.formgrid,.scenario{grid-template-columns:1fr}.side{width:58px}.main{margin-left:58px;width:calc(100% - 58px)}.daily-welcome{padding:20px 18px;gap:15px}.daily-welcome h2{font-size:25px}.daily-right{grid-template-columns:1fr}th,td{padding:10px 8px;font-size:11px}}
+  </style>`;
+  html=html.replace('</head>',css+'</head>');
+  const daily=`<script>(function(){function dailyWelcome(){const now=new Date();const day=Math.floor((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-Date.UTC(now.getFullYear(),0,0))/86400000);const mottos=["Small steps, beautifully made, become something extraordinary.","Consistency is how a little idea becomes a lasting business.","Create with care. Serve with heart. Grow with intention.","Your creativity has value. Give it room to bloom.","Progress over perfection—one thoughtful order at a time.","Build patiently. Celebrate every little win.","A beautiful business is built through beautiful daily habits."];const affirmations=["I am building a business that reflects my creativity and purpose.","I welcome meaningful orders, happy customers, and steady growth.","I trust my ideas, honour my progress, and keep showing up.","My work has value, and I am capable of growing it with care.","I make thoughtful decisions and create opportunities every day.","I am learning, improving, and becoming a confident business owner.","Abundance grows through my creativity, consistency, and courage."];return '<section class="daily-welcome"><div><div class="daily-kicker">✦ A little inspiration for your business</div><div class="daily-date">'+now.toLocaleDateString('en-PH',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</div><h2>Good day, SEREA. ✿</h2><p>'+mottos[day%mottos.length]+'</p></div><div class="daily-right"><div class="daily-note"><small>Today\'s affirmation</small><strong>“'+affirmations[(day+2)%affirmations.length]+'”</strong></div><div class="daily-note"><small>A gentle reminder</small><strong>Every order, every lesson, every small step is part of your growth.</strong></div></div></section>';}const old=window.render; if(typeof old==='function'){window.render=function(p){old(p);if(p==='dashboard'){const c=document.getElementById('content');if(c&&!c.querySelector('.daily-welcome'))c.insertAdjacentHTML('afterbegin',dailyWelcome());}};window.addEventListener('load',()=>{const c=document.getElementById('content');if(c&&!c.querySelector('.daily-welcome'))c.insertAdjacentHTML('afterbegin',dailyWelcome());});}})();<\/script>`;
+  html=html.replace('</body>',daily+'</body>');
+  const frame=document.getElementById('app');frame.srcdoc=html;frame.onload=()=>{document.getElementById('loader').style.display='none';frame.style.display='block';};
+ }catch(e){document.getElementById('loader').innerHTML='<div><strong>SEREA</strong><p>We could not open the Business Studio.</p><small>'+String(e.message||e)+'</small></div>';}
+})();
+</script>
+</body></html>
