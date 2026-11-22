@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#7541a8">
+<title>SEREA | Business Studio</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#fbf9fd}
+#serea-loader{min-height:100vh;display:grid;place-items:center;text-align:center;font:15px system-ui;color:#7541a8;padding:24px;box-sizing:border-box}
+#serea-loader strong{display:block;font:700 30px Georgia;letter-spacing:4px;margin-bottom:8px}
+#serea-loader small{color:#82778c}
+#serea-app-frame{display:none;border:0;width:100%;height:100%;min-height:100vh}
+</style>
+</head>
+<body>
+<div id="serea-loader"><div><strong>SEREA</strong>Preparing your Business Studio…<br><small>Please keep this page open for a moment.</small></div></div>
+<iframe id="serea-app-frame" title="SEREA Business Studio"></iframe>
+<script>
+(async function(){
+  const ORIGINAL_APP='https://raw.githubusercontent.com/rsdigitals134-sys/serea-business-system/052098a16c0efaa3d32f9fffee61d6831ac9fdee/index%204.html';
+  const CLOUD_SCRIPT = String.raw`
+(function(){
+  const SUPABASE_URL='https://bxyegvfjdeoeppitiofe.supabase.co';
+  const SUPABASE_KEY='sb_publishable_1eWvUFfbHL7iihWh9-PvIQ_HUtZLAqs';
+  const OWNER_EMAIL='businesswithroxsan@yahoo.com';
+  const TABLE='serea_app_state';
+  const KEYS=['products','materials','purchases','recipes','production','sales','cash','pipeline'];
+  const style=document.createElement('style');
+  style.textContent='#serea-auth{position:fixed;inset:0;z-index:99999;background:#faf7fd;display:grid;place-items:center;padding:20px;font-family:system-ui;color:#30263b}#serea-auth .panel{width:min(420px,100%);background:white;border:1px solid #eadff2;border-radius:22px;padding:28px;box-shadow:0 12px 40px #39204b18;box-sizing:border-box}#serea-auth h1{font:700 30px Georgia;color:#7541a8;letter-spacing:3px;margin:0}#serea-auth p{color:#82778c;line-height:1.5}#serea-auth input{width:100%;padding:13px;border:1px solid #eadff2;border-radius:10px;font-size:16px;margin:8px 0 12px;background:#fbf9fd;color:#30263b;box-sizing:border-box}#serea-auth button{width:100%;padding:13px;border:0;border-radius:10px;background:#7541a8;color:white;font-weight:700;font-size:15px}#serea-auth .msg{font-size:13px;min-height:22px;margin-top:12px;overflow-wrap:anywhere}#serea-cloud-status{position:fixed;right:12px;bottom:14px;z-index:1000;background:#fff;border:1px solid #eadff2;border-radius:30px;padding:7px 11px;font:12px system-ui;color:#7541a8;box-shadow:0 3px 12px #30263b12}#serea-cloud-status button{border:0;background:none;color:#7541a8;font-weight:700;margin-left:8px}';
+  document.head.appendChild(style);
+  const auth=document.createElement('div');auth.id='serea-auth';
+  auth.innerHTML='<div class="panel"><h1>SEREA</h1><div style="font-size:10px;letter-spacing:2px;color:#82778c;margin-top:3px">BUSINESS STUDIO</div><h2 style="font:700 21px Georgia;margin:25px 0 5px">Your private business workspace</h2><p>Sign in using your owner email. We’ll send a secure one-time login link.</p><form id="serea-login-form"><input id="serea-email" type="email" autocomplete="email" readonly value="'+OWNER_EMAIL+'"><button type="submit">Send my secure login link</button></form><div class="msg" id="serea-auth-msg"></div><p style="font-size:11px;margin-top:20px">Only the authorized owner email can access this workspace.</p></div>';
+  document.body.appendChild(auth);
+  const status=document.createElement('div');status.id='serea-cloud-status';status.textContent='Connecting to SEREA cloud…';document.body.appendChild(status);
+  if(!window.supabase||!window.supabase.createClient){status.textContent='Cloud service could not load';return;}
+  const supa=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  let user=null,ready=false,restoring=false,timer=null;
+  const msg=t=>document.getElementById('serea-auth-msg').textContent=t;
+  const setStatus=t=>{status.childNodes[0].textContent=t;};
+  function snapshot(){const d={};KEYS.forEach(k=>{try{d[k]=JSON.parse(localStorage.getItem('serea_'+k)||'[]')}catch{d[k]=[]}});return d;}
+  async function push(){if(!user||!ready||restoring)return;setStatus('Saving to cloud…');const {error}=await supa.from(TABLE).upsert({owner_id:user.id,data:snapshot(),updated_at:new Date().toISOString()},{onConflict:'owner_id'});if(error){setStatus('Cloud save needs attention');console.error('SEREA cloud save',error)}else setStatus('Saved securely');}
+  function schedule(){if(!user||!ready||restoring)return;clearTimeout(timer);timer=setTimeout(push,900);}
+  const originalSet=Storage.prototype.setItem;
+  Storage.prototype.setItem=function(k,v){originalSet.call(this,k,v);if(typeof k==='string'&&k.startsWith('serea_'))schedule();};
+  async function activate(u){
+    if((u.email||'').toLowerCase()!==OWNER_EMAIL){await supa.auth.signOut();auth.style.display='grid';status.style.display='none';msg('This account is not authorized for SEREA owner access.');return;}
+    user=u;auth.style.display='none';status.style.display='block';setStatus('Loading your cloud data…');
+    try{
+      const {data,error}=await supa.from(TABLE).select('data,updated_at').eq('owner_id',u.id).maybeSingle();
+      if(error)throw error;
+      if(data&&data.data){restoring=true;KEYS.forEach(k=>{const value=Array.isArray(data.data[k])?data.data[k]:[];localStorage.setItem('serea_'+k,JSON.stringify(value));if(typeof db!=='undefined')db[k]=value;});restoring=false;if(typeof render==='function')render(typeof current!=='undefined'?current:'dashboard');setStatus('Cloud data loaded');}
+      else{ready=true;setStatus('Signed in · ready for your business data');await push();return;}
+      ready=true;
+    }catch(e){restoring=false;ready=false;setStatus('Cloud connection error');console.error('SEREA cloud load',e);alert('SEREA could not load cloud data. Please refresh and sign in again.');}
+  }
+  document.getElementById('serea-login-form').addEventListener('submit',async e=>{e.preventDefault();msg('Sending your secure login link…');const {error}=await supa.auth.signInWithOtp({email:OWNER_EMAIL,options:{emailRedirectTo:location.origin+location.pathname,shouldCreateUser:true}});msg(error?error.message:'Login link sent! Open the email and tap the link on this same phone/browser.');});
+  supa.auth.onAuthStateChange((event,session)=>{if(session&&session.user)setTimeout(()=>activate(session.user),0);});
+  supa.auth.getSession().then(({data,error})=>{if(error){status.style.display='none';return;}if(data.session&&data.session.user)activate(data.session.user);else status.style.display='none';});
+  const signout=document.createElement('button');signout.textContent='Sign out';signout.style.cssText='border:0;background:none;color:#7541a8;font-weight:700;margin-left:8px';signout.onclick=async()=>{ready=false;await supa.auth.signOut();location.reload();};status.appendChild(signout);
+  const hash=new URLSearchParams(parent.location.hash.replace(/^#/,''));
+  const access=hash.get('access_token'),refresh=hash.get('refresh_token');
+  if(access&&refresh){supa.auth.setSession({access_token:access,refresh_token:refresh}).then(({error})=>{if(error)msg('Login link could not be verified. Please request a new link.');else{try{parent.history.replaceState(null,'',parent.location.pathname+parent.location.search)}catch(e){}}});}
+  parent.addEventListener('focus',()=>{if(user&&ready)schedule();});
+})();`;
+  try{
+    const response=await fetch(ORIGINAL_APP,{cache:'no-store'});
+    if(!response.ok)throw new Error('Could not retrieve the saved SEREA app ('+response.status+').');
+    let app=await response.text();
+    app=app.replace('<head>','<head><base href="https://rsdigitals134-sys.github.io/serea-business-system/">');
+    const inject='<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script><script>'+CLOUD_SCRIPT+'<\/script>';
+    if(!app.includes('</body>'))throw new Error('The saved SEREA app file is incomplete.');
+    app=app.replace('</body>',inject+'</body>');
+    const frame=document.getElementById('serea-app-frame');
+    frame.srcdoc=app;
+    frame.onload=()=>{document.getElementById('serea-loader').style.display='none';frame.style.display='block';};
+  }catch(e){
+    document.getElementById('serea-loader').innerHTML='<div><strong>SEREA</strong><p>We could not load the saved website file.</p><small>'+String(e.message||e)+'</small><p>Please contact ChatGPT before replacing anything in GitHub.</p></div>';
+  }
+})();
+</script>
+</body>
+</html>
